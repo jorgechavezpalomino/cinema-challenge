@@ -54,6 +54,28 @@ select {
   gap: 12px;
 }
 
+.brand-copy {
+  display: grid;
+  gap: 2px;
+}
+
+.brand-title,
+.brand-subtitle {
+  display: block;
+}
+
+.brand-title {
+  font-size: 1.08rem;
+  line-height: 1.1;
+}
+
+.brand-subtitle {
+  color: rgba(247, 244, 238, 0.72);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .brand-mark {
   display: grid;
   place-items: center;
@@ -212,15 +234,64 @@ select {
 
 .catalog-layout {
   grid-template-columns: 1.4fr 0.6fr;
+  align-items: start;
+}
+
+.catalog-main {
+  display: grid;
+  gap: 20px;
+}
+
+.catalog-header {
+  display: grid;
+  gap: 10px;
 }
 
 .product-card {
   border-radius: 24px;
-  padding: 20px;
+  padding: 22px;
+  display: grid;
+  gap: 20px;
+}
+
+.product-copy {
+  display: grid;
+  gap: 10px;
+}
+
+.product-copy h2,
+.summary-panel h2,
+.catalog-header h1 {
+  margin: 0;
+}
+
+.product-copy p,
+.catalog-header p {
+  margin: 0;
+  color: rgba(247, 244, 238, 0.82);
+  line-height: 1.5;
+}
+
+.product-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.product-price {
+  font-size: 1.6rem;
+}
+
+.product-button {
+  min-width: 132px;
 }
 
 .summary-panel {
   align-self: start;
+  display: grid;
+  gap: 12px;
 }
 
 .cart-row,

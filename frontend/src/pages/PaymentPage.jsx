@@ -66,11 +66,6 @@ export default function PaymentPage() {
       <form className="panel payment-form" onSubmit={handleSubmit}>
         <p className="eyebrow">Pago</p>
         <h1>Finaliza tu compra</h1>
-        <p className="payment-hint">
-          Sandbox PayU: usa `4907840000000005` o `5491610000000001`. Para aprobar, incluye `APPROVED` en el nombre, CVV `777`
-          y una fecha menor a junio, por ejemplo `05/30`. Para rechazo usa `REJECTED`, CVV `666` y una fecha mayor a junio,
-          por ejemplo `07/30`.
-        </p>
         <label>
           Numero de tarjeta
           <input name="cardNumber" pattern="\d{16}" maxLength="16" required value={form.cardNumber} onChange={onChange} />

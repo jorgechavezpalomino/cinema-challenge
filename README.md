@@ -1,85 +1,109 @@
-# Cinema Ecommerce Challenge
+# Cinema Checkout
 
-Solucion de referencia para la prueba FullStack:
+Aplicacion FullStack para un flujo de compra de cine construida con React, microservicios Spring Boot, PostgreSQL y PayU Sandbox.
 
-- Frontend: React + Vite
-- Backend: Spring Boot microservices
-- DB: PostgreSQL con funcion almacenada
-- Infra: Docker Compose
+Demo publica:
 
-## Estructura
+- `https://retocineplanet.web.app/`
 
-- `frontend`: aplicacion React
-- `backend/premieres-service`: catalogo de estrenos
-- `backend/candystore-service`: catalogo de dulceria
-- `backend/gateway-service`: autenticacion, JWT y orquestacion del flujo
-- `backend/complete-service`: cierre de compra
-- `db/init`: scripts SQL para tablas y procedimientos
+## Quick Start
 
-## Alcance implementado
-
-- Flujo web completo: `Home -> Login -> Dulceria -> Pago -> Compra correcta`
-- Login con Google Identity Services y validacion real del `id_token` en backend
-- Integracion minima real con PayU Sandbox en el servicio principal
-- JWT para proteger checkout
-- Swagger en los cuatro servicios
-- Funcion almacenada PostgreSQL para registrar la compra final
-- Docker Compose para frontend, APIs y base de datos
-
-## Ejecucion
+Para ejecutar el proyecto localmente:
 
 ```bash
 docker compose up --build
 ```
 
-Servicios:
+Luego abre:
 
 - Frontend: `http://localhost:5173`
-- Gateway API: `http://localhost:8080/swagger-ui.html`
-- Premieres API: `http://localhost:8081/swagger-ui.html`
-- Candystore API: `http://localhost:8082/swagger-ui.html`
-- Complete API: `http://localhost:8083/swagger-ui.html`
+- Swagger Gateway: `http://localhost:8080/swagger-ui.html`
 
-## Variables utiles
+Para la evaluacion local no es necesario configurar variables adicionales.
 
-- `VITE_GATEWAY_API`: URL publica del gateway para frontend desplegado
-- `VITE_GOOGLE_CLIENT_ID`: client id de Google para el frontend
-- `JWT_SECRET`: secreto JWT del backend
-- `GOOGLE_CLIENT_ID`: client id aceptado por el backend para validar tokens
-- `CORS_ALLOWED_ORIGIN_PATTERNS`: origenes permitidos por backend separados por coma
-- `PAYU_*`: credenciales y endpoint sandbox de PayU
+Notas:
 
-## Local Y Produccion
+- El flujo completo puede probarse con ingreso como `Invitado`
+- `PayU Sandbox` ya usa credenciales de prueba
+- El login con Google puede requerir que `http://localhost:5173` este autorizado en Google Cloud
 
-Es buena practica que el mismo codigo funcione en local y en produccion. Este proyecto queda preparado para eso usando variables de entorno con valores por defecto locales:
+## Stack
 
-- En local, si no defines variables, usa `localhost` y puertos de desarrollo.
-- En produccion, defines variables como `PORT`, `VITE_GATEWAY_API`, `SERVICES_*`, `SPRING_DATASOURCE_*`, `JWT_SECRET` y `CORS_ALLOWED_ORIGIN_PATTERNS`.
-- No necesitas ramas separadas ni archivos duplicados solo para deploy.
+- Frontend: `React + Vite`
+- Backend: `Spring Boot`
+- Base de datos: `PostgreSQL`
+- Autenticacion: `Google Identity Services + JWT`
+- Pagos: `PayU Sandbox`
+- Infraestructura local: `Docker Compose`
 
-Ejemplos:
+## Arquitectura
 
-- Frontend local:
-  - `VITE_GATEWAY_API=http://localhost:8080/api`
-- Frontend desplegado:
-  - `VITE_GATEWAY_API=https://tu-gateway.onrender.com/api`
-- Gateway en produccion:
-  - `SERVICES_PREMIERES_URL=https://tu-premieres.onrender.com/api/premieres`
-  - `SERVICES_CANDYSTORE_URL=https://tu-candystore.onrender.com/api/candystore`
-  - `SERVICES_COMPLETE_URL=https://tu-complete.onrender.com/api/complete`
-  - `CORS_ALLOWED_ORIGIN_PATTERNS=https://tu-app.web.app,https://tu-app.firebaseapp.com`
+- `frontend`
+  - interfaz web
+- `backend/premieres-service`
+  - catalogo de peliculas
+- `backend/candystore-service`
+  - catalogo de dulceria
+- `backend/gateway-service`
+  - autenticacion y orquestacion del flujo
+- `backend/complete-service`
+  - cierre de compra y persistencia final
+- `db/init`
+  - script de inicializacion de PostgreSQL
 
-Nota:
-- En este flujo no se usa `Client secret`; Google Sign-In web con `id_token` solo requiere `Client ID`.
+## Alcance
 
-## Pruebas PayU Sandbox
+- Flujo completo `Home -> Login -> Dulceria -> Pago -> Compra correcta`
+- Login con Google e ingreso como invitado
+- Consumo de catalogos REST
+- Checkout con integracion minima a `PayU Sandbox`
+- Registro final de compra en PostgreSQL mediante funcion almacenada
+- Swagger habilitado en los microservicios
 
-- Tarjetas Peru de prueba: `4907840000000005`, `4634010000000005`, `5491610000000001`, `377753000000009`
-- Aprobacion:
-  - incluye `APPROVED` en el nombre del tarjetahabiente
-  - usa CVV `777` o `7777` para AMEX
-  - usa una expiracion con mes menor a `06`, por ejemplo `05/30`
-- Rechazo:
-  - incluye `REJECTED` en el nombre del tarjetahabiente
-  - usa CVV `666` o `6666` para AMEX
-  - usa una expiracion con mes mayor a `06`, por ejemplo `07/30`
+## Testing
+
+El proyecto incluye `17 tests`:
+
+- Frontend: `1`
+- `premieres-service`: `1`
+- `candystore-service`: `1`
+- `complete-service`: `1`
+- `gateway-service`: `13`
+
+### Frontend
+
+```bash
+cd frontend
+npm run test
+```
+
+### Backend
+
+```bash
+docker run --rm -v %cd%\backend\premieres-service:/app -w /app maven:3.9.9-eclipse-temurin-17 mvn test
+docker run --rm -v %cd%\backend\candystore-service:/app -w /app maven:3.9.9-eclipse-temurin-17 mvn test
+docker run --rm -v %cd%\backend\complete-service:/app -w /app maven:3.9.9-eclipse-temurin-17 mvn test
+docker run --rm -v %cd%\backend\gateway-service:/app -w /app maven:3.9.9-eclipse-temurin-17 mvn test
+```
+
+## Despliegue
+
+La solucion fue preparada para ejecutarse tanto en local como en despliegue usando variables de entorno.
+
+Configuraciones tipicas:
+
+- Frontend en Firebase Hosting
+- Microservicios backend en Render o Railway
+- PostgreSQL gestionado
+
+Variables relevantes de despliegue:
+
+- Frontend: `VITE_GATEWAY_API`, `VITE_GOOGLE_CLIENT_ID`
+- Gateway: `JWT_SECRET`, `GOOGLE_CLIENT_ID`, `CORS_ALLOWED_ORIGIN_PATTERNS`, `SERVICES_*`, `PAYU_*`
+- Complete Service: `SPRING_DATASOURCE_*`, `CORS_ALLOWED_ORIGIN_PATTERNS`
+
+## API Docs
+
+Swagger esta disponible en cada microservicio mediante:
+
+- `GET /swagger-ui.html`

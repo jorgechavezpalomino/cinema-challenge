@@ -16,9 +16,9 @@ export default function App() {
       <header className="topbar">
         <div className="brand">
           <span className="brand-mark">C</span>
-          <div>
-            <strong>Cinema Checkout</strong>
-            <small>Reto FullStack</small>
+          <div className="brand-copy">
+            <strong className="brand-title">Cinema Checkout</strong>
+            <small className="brand-subtitle">Reto FullStack</small>
           </div>
         </div>
         <nav className="menu">
