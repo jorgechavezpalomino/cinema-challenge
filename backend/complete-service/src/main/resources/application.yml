@@ -1,0 +1,12 @@
+server:
+  port: 8083
+
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/cinema?allowPublicKeyRetrieval=true&useSSL=false}
+    username: ${SPRING_DATASOURCE_USERNAME:cinema}
+    password: ${SPRING_DATASOURCE_PASSWORD:cinema}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html

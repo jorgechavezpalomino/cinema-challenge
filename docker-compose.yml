@@ -1,0 +1,70 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: cinema-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: cinema
+      MYSQL_USER: cinema
+      MYSQL_PASSWORD: cinema
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db/init:/docker-entrypoint-initdb.d
+
+  premieres-service:
+    build:
+      context: ./backend/premieres-service
+    container_name: premieres-service
+    ports:
+      - "8081:8081"
+
+  candystore-service:
+    build:
+      context: ./backend/candystore-service
+    container_name: candystore-service
+    ports:
+      - "8082:8082"
+
+  gateway-service:
+    build:
+      context: ./backend/gateway-service
+    container_name: gateway-service
+    ports:
+      - "8080:8080"
+    environment:
+      SERVICES_PREMIERES_URL: http://premieres-service:8081/api/premieres
+      SERVICES_CANDYSTORE_URL: http://candystore-service:8082/api/candystore
+      SERVICES_COMPLETE_URL: http://complete-service:8083/api/complete
+      PAYU_PAYMENTS_URL: https://sandbox.api.payulatam.com/payments-api/4.0/service.cgi
+      PAYU_API_LOGIN: pRRXKOl8ikMmt9u
+      PAYU_API_KEY: 4Vj8eK4rloUd272L48hsrarnUA
+      PAYU_MERCHANT_ID: 508029
+      PAYU_ACCOUNT_ID: 512323
+      PAYU_TEST: "true"
+    depends_on:
+      - premieres-service
+      - candystore-service
+      - complete-service
+
+  complete-service:
+    build:
+      context: ./backend/complete-service
+    container_name: complete-service
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/cinema?allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: cinema
+      SPRING_DATASOURCE_PASSWORD: cinema
+    depends_on:
+      - mysql
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: cinema-frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - gateway-service

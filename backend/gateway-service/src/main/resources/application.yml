@@ -1,0 +1,28 @@
+server:
+  port: 8080
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+security:
+  jwt:
+    secret: very-secret-demo-key-for-cinema-checkout-2026
+  google:
+    client-id: ${GOOGLE_CLIENT_ID:381774390951-c5o208n82ehm87ph3mltuispajpj2b8o.apps.googleusercontent.com}
+
+services:
+  premieres-url: ${SERVICES_PREMIERES_URL:http://localhost:8081/api/premieres}
+  candystore-url: ${SERVICES_CANDYSTORE_URL:http://localhost:8082/api/candystore}
+  complete-url: ${SERVICES_COMPLETE_URL:http://localhost:8083/api/complete}
+
+payu:
+  payments-url: ${PAYU_PAYMENTS_URL:https://sandbox.api.payulatam.com/payments-api/4.0/service.cgi}
+  api-login: ${PAYU_API_LOGIN:pRRXKOl8ikMmt9u}
+  api-key: ${PAYU_API_KEY:4Vj8eK4rloUd272L48hsrarnUA}
+  merchant-id: ${PAYU_MERCHANT_ID:508029}
+  account-id: ${PAYU_ACCOUNT_ID:512323}
+  currency: ${PAYU_CURRENCY:PEN}
+  country: ${PAYU_COUNTRY:PE}
+  language: ${PAYU_LANGUAGE:es}
+  test: ${PAYU_TEST:true}
