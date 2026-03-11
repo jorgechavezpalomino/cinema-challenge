@@ -1,11 +1,15 @@
 server:
-  port: 8083
+  port: ${PORT:8083}
 
 spring:
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/cinema?allowPublicKeyRetrieval=true&useSSL=false}
     username: ${SPRING_DATASOURCE_USERNAME:cinema}
     password: ${SPRING_DATASOURCE_PASSWORD:cinema}
+
+app:
+  cors:
+    allowed-origin-patterns: ${CORS_ALLOWED_ORIGIN_PATTERNS:http://localhost:5173,https://*.web.app,https://*.firebaseapp.com}
 
 springdoc:
   swagger-ui:

@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: ${PORT:8080}
 
 springdoc:
   swagger-ui:
@@ -7,9 +7,13 @@ springdoc:
 
 security:
   jwt:
-    secret: very-secret-demo-key-for-cinema-checkout-2026
+    secret: ${JWT_SECRET:very-secret-demo-key-for-cinema-checkout-2026}
   google:
     client-id: ${GOOGLE_CLIENT_ID:381774390951-c5o208n82ehm87ph3mltuispajpj2b8o.apps.googleusercontent.com}
+
+app:
+  cors:
+    allowed-origin-patterns: ${CORS_ALLOWED_ORIGIN_PATTERNS:http://localhost:5173,https://*.web.app,https://*.firebaseapp.com}
 
 services:
   premieres-url: ${SERVICES_PREMIERES_URL:http://localhost:8081/api/premieres}
