@@ -4,7 +4,7 @@ Solucion de referencia para la prueba FullStack:
 
 - Frontend: React + Vite
 - Backend: Spring Boot microservices
-- DB: MySQL con procedimiento almacenado
+- DB: PostgreSQL con funcion almacenada
 - Infra: Docker Compose
 
 ## Estructura
@@ -23,7 +23,7 @@ Solucion de referencia para la prueba FullStack:
 - Integracion minima real con PayU Sandbox en el servicio principal
 - JWT para proteger checkout
 - Swagger en los cuatro servicios
-- Procedimiento almacenado MySQL para registrar la compra final
+- Funcion almacenada PostgreSQL para registrar la compra final
 - Docker Compose para frontend, APIs y base de datos
 
 ## Ejecucion

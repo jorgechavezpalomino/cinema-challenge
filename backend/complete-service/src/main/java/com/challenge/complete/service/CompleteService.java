@@ -18,7 +18,7 @@ public class CompleteService {
 
     public CompleteResponse completePurchase(CompleteRequest request) {
         Map<String, Object> row = jdbcTemplate.queryForMap(
-                "CALL sp_complete_purchase(?, ?, ?, ?, ?)",
+                "SELECT * FROM sp_complete_purchase(?, ?, ?, ?, ?)",
                 request.email(),
                 request.name(),
                 request.documentNumber(),

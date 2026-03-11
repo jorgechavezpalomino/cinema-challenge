@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS completed_purchase (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
     email VARCHAR(120) NOT NULL,
     full_name VARCHAR(120) NOT NULL,
     document_number VARCHAR(30) NOT NULL,
@@ -8,16 +8,18 @@ CREATE TABLE IF NOT EXISTS completed_purchase (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-DROP PROCEDURE IF EXISTS sp_complete_purchase;
+DROP FUNCTION IF EXISTS sp_complete_purchase(VARCHAR, VARCHAR, VARCHAR, VARCHAR, VARCHAR);
 
-DELIMITER //
-CREATE PROCEDURE sp_complete_purchase(
-    IN p_email VARCHAR(120),
-    IN p_full_name VARCHAR(120),
-    IN p_document_number VARCHAR(30),
-    IN p_operation_date VARCHAR(60),
-    IN p_transaction_id VARCHAR(80)
+CREATE OR REPLACE FUNCTION sp_complete_purchase(
+    p_email VARCHAR(120),
+    p_full_name VARCHAR(120),
+    p_document_number VARCHAR(30),
+    p_operation_date VARCHAR(60),
+    p_transaction_id VARCHAR(80)
 )
+RETURNS TABLE(code TEXT, message TEXT)
+LANGUAGE plpgsql
+AS $$
 BEGIN
     INSERT INTO completed_purchase (
         email,
@@ -33,6 +35,6 @@ BEGIN
         p_transaction_id
     );
 
-    SELECT '0' AS code, 'Compra registrada correctamente' AS message;
-END //
-DELIMITER ;
+    RETURN QUERY SELECT '0'::TEXT, 'Compra registrada correctamente'::TEXT;
+END;
+$$;

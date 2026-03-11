@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/cinema?allowPublicKeyRetrieval=true&useSSL=false}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/cinema}
     username: ${SPRING_DATASOURCE_USERNAME:cinema}
     password: ${SPRING_DATASOURCE_PASSWORD:cinema}
 

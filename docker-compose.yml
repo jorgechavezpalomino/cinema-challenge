@@ -1,16 +1,15 @@
 services:
-  mysql:
-    image: mysql:8.4
-    container_name: cinema-mysql
+  postgres:
+    image: postgres:16
+    container_name: cinema-postgres
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: cinema
-      MYSQL_USER: cinema
-      MYSQL_PASSWORD: cinema
+      POSTGRES_DB: cinema
+      POSTGRES_USER: cinema
+      POSTGRES_PASSWORD: cinema
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - ./db/init:/docker-entrypoint-initdb.d
+      - ./db/init/01-schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
 
   premieres-service:
     build:
@@ -54,11 +53,11 @@ services:
     ports:
       - "8083:8083"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/cinema?allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/cinema
       SPRING_DATASOURCE_USERNAME: cinema
       SPRING_DATASOURCE_PASSWORD: cinema
     depends_on:
-      - mysql
+      - postgres
 
   frontend:
     build:
